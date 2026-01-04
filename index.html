@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miraculous Adventure Addon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" type="text/css" media="all" />
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="Miraculous_Logo.png" alt="Miraculous Adventure Logo" onerror="this.src='https://via.placeholder.com/150x50?text=Miraculous+Logo'">
+        </div>
+        <div class="hamburger" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+<nav id="navbar">
+    <ul>
+        <li><button id="nav-about" onclick="app.navigate('sobre')">Sobre</button></li>
+        <li><button id="nav-mira" onclick="app.navigate('miraculous')">Miraculous</button></li>
+        <li><button id="nav-cred" onclick="app.navigate('creditos')">Créditos</button></li>
+        <li><button id="nav-news" onclick="app.navigate('novidades')">Novidades</button></li>
+        <li><button id="nav-theme" onclick="app.navigate('temas')">Temas</button></li>
+        <li><button id="nav-down" onclick="app.navigate('download')">Download</button></li>
+    </ul>
+</nav>
+
+    </header>
+
+    <main id="content-area"></main>
+
+<script src="main.js" type="text/javascript" charset="utf-8"></script>
+</body>
+</html>

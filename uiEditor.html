@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Miraculous Studio v8.0 (Retro Theme)</title>
+    
+    <!-- Fonte Retro Obrigatória -->
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+
+    <style>
+        /* =========================
+           VARIÁVEIS GLOBAIS (DO USUÁRIO)
+        ========================= */
+        :root {
+            /* Backgrounds */
+            --mc-bg: #383838;
+            --mc-panel: #48494a;
+            --mc-bg-overlay: rgba(0,0,0,0.3);
+            --mc-bg-overlay-light: rgba(255,255,255,0.1);
+
+            /* Borders */
+            --mc-border-light: #8b8b8b;
+            --mc-border-dark: #1e1e1f;
+            --mc-border-black: #000000;
+            --mc-border-gray: #666666;
+            --mc-border-soft: #5e5e5e;
+
+            /* Header */
+            --mc-header-red: #b71c1c;
+            --mc-header-border: #7f0000;
+
+            /* Text */
+            --mc-text: #ffffff;
+            --mc-text-muted: #aaa;
+            --mc-title-gold: #ffd700;
+            --mc-text-shadow: 2px 2px 0px #000;
+            
+            /* Logic Vars */
+            --mc-lock: #ff4444;
+
+            /* Buttons default */
+            --mc-btn-bg: #7d7d7d;
+            --mc-btn-border-light: #aeb0b2;
+            --mc-btn-border-dark: #3a3a3b;
+
+            /* Buttons green */
+            --mc-green-btn: #3c8527;
+            --mc-green-btn-hover: #2a641c;
+            --mc-green-border-light: #5bb344;
+            --mc-green-border-dark: #1e4513;
+
+            /* Shadows */
+            --mc-shadow-strong: rgba(0,0,0,0.5);
+            --mc-shadow-soft: rgba(0,0,0,0.4);
+
+            /* Images */
+            --mc-bg-image: url('https://www.transparenttextures.com/patterns/cubes.png');
+        }
+
+        /* =========================
+           RESET & BASE
+        ========================= */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body, html {
+            margin: 0; padding: 0; height: 100%;
+            font-family: 'VT323', monospace; /* Fonte Pixelada Global */
+            background-color: var(--mc-bg);
+            background-image: var(--mc-bg-image);
+            color: var(--mc-text);
+            overflow: hidden; touch-action: none;
+            font-size: 18px; /* Aumentado para melhor leitura da fonte pixel */
+        }
+
+        /* =========================
+           ESTILOS DO TEMA (ADAPTADOS PARA O APP)
+        ========================= */
+        
+        /* Botões Estilo Minecraft */
+        .mc-button {
+            display: inline-block;
+            background-color: var(--mc-btn-bg);
+            border: 2px solid;
+            border-color: var(--mc-btn-border-light) var(--mc-btn-border-dark) var(--mc-btn-border-dark) var(--mc-btn-border-light);
+            color: var(--mc-text);
+            padding: 5px 10px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            text-shadow: 1px 1px 0 var(--mc-border-black);
+            width: 100%; margin-bottom: 5px;
+            text-align: center;
+            user-select: none;
+        }
+
+        .mc-button:active {
+            border-color: var(--mc-btn-border-dark) var(--mc-btn-border-light) var(--mc-btn-border-light) var(--mc-btn-border-dark);
+            transform: translate(2px, 2px);
+        }
+
+        .mc-button.primary { /* Verde */
+            background-color: var(--mc-green-btn);
+            border-color: var(--mc-green-border-light) var(--mc-green-border-dark) var(--mc-green-border-dark) var(--mc-green-border-light);
+        }
+        
+        .mc-button.danger { /* Vermelho/Lock */
+            background-color: var(--mc-header-red);
+            border-color: #ff5555 var(--mc-header-border) var(--mc-header-border) #ff5555;
+        }
+
+        /* Painéis Estilo Minecraft */
+        .ore-panel-style {
+            background-color: var(--mc-panel);
+            border: 4px solid;
+            border-color: var(--mc-border-light) var(--mc-border-dark) var(--mc-border-dark) var(--mc-border-light);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .section-title {
+            color: var(--mc-title-gold);
+            text-shadow: var(--mc-text-shadow);
+            font-size: 1.2rem;
+            margin-top: 15px; margin-bottom: 5px;
+            border-bottom: 2px solid var(--mc-border-gray);
+        }
+
+        /* Inputs Retro */
+        input, textarea, select {
+            width: 100%; 
+            background: #222; 
+            border: 2px solid var(--mc-border-soft);
+            border-bottom: 2px solid var(--mc-border-light);
+            border-right: 2px solid var(--mc-border-light);
+            color: var(--mc-title-gold); 
+            padding: 5px; margin-bottom: 5px; 
+            font-family: 'VT323', monospace; font-size: 1.1rem;
+        }
+
+        /* =========================
+           LAYOUT GRID DO STUDIO
+        ========================= */
+        .studio-container {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            grid-template-rows: 70px 1fr 200px; /* Header 70px conforme CSS original */
+            height: 100vh; width: 100vw;
+        }
+
+        /* Header */
+        header {
+            grid-column: 1 / -1;
+            background-color: var(--mc-header-red);
+            border-bottom: 4px solid var(--mc-header-border);
+            box-shadow: 0 4px 0 var(--mc-shadow-soft);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 20px; z-index: 1000;
+        }
+
+        .brand { 
+            font-size: 2rem; 
+            color: var(--mc-title-gold); 
+            text-shadow: var(--mc-text-shadow); 
+        }
+        .brand span { color: #fff; font-size: 1.5rem; }
+
+        /* Painéis Laterais */
+        .sidebar-left, .sidebar-right { 
+            grid-row: 2/4; 
+            overflow-y: auto; padding: 15px;
+            /* Aplicando estilo Ore Panel */
+            background-color: var(--mc-panel);
+            border-right: 4px solid var(--mc-border-dark);
+            border-left: 4px solid var(--mc-border-light); /* Visual 3D */
+        }
+        
+        .work-area {
+            grid-column: 2; grid-row: 2/3; 
+            background: #222;
+            position: relative; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            background-image: radial-gradient(#444 2px, transparent 2px);
+            background-size: 30px 30px;
+            box-shadow: inset 0 0 50px #000;
+        }
+
+        .bottom-panel {
+            grid-column: 2; grid-row: 3; 
+            background: #1a1a1a;
+            border-top: 4px solid var(--mc-border-dark); 
+            display: flex; flex-direction: column;
+        }
+
+        /* --- CANVAS (Onde os elementos ficam) --- */
+        #canvas {
+            width: 460px; height: 740px; 
+            background: #fff; /* Mantém branco para simular tela de app padrão */
+            border: 4px solid var(--mc-border-black); 
+            position: relative;
+            box-shadow: 10px 10px 0 rgba(0,0,0,0.5); 
+            transform-origin: center center;
+            overflow: hidden;
+        }
+
+        .element-wrapper {
+            position: absolute; box-sizing: border-box;
+            user-select: none; touch-action: none;
+            border: 1px dashed rgba(0,0,0,0.5);
+        }
+        .element-wrapper.selected { 
+            border: 3px solid var(--mc-title-gold); 
+            z-index: 99999 !important; 
+            box-shadow: 0 0 10px var(--mc-title-gold);
+        }
+        .element-wrapper.locked { 
+            border: 2px solid var(--mc-lock); 
+            pointer-events: none; 
+            opacity: 0.8;
+        }
+        
+        .real-html {
+            width: 100%; height: 100%; display: block;
+            pointer-events: none; box-sizing: border-box;
+        }
+
+        /* --- TREE VIEW --- */
+        .layer-item {
+            background: rgba(0,0,0,0.2); 
+            border: 1px solid var(--mc-border-dark); 
+            padding: 5px;
+            font-size: 1rem; display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 2px; cursor: pointer;
+            transition: 0.2s;
+        }
+        .layer-item:hover { background: rgba(255,255,255,0.05); }
+        .layer-item.active { 
+            border: 1px solid var(--mc-title-gold); 
+            color: var(--mc-title-gold); 
+            background: rgba(255, 215, 0, 0.1); 
+        }
+        .layer-item.is-locked { color: var(--mc-lock); border-color: var(--mc-lock); }
+
+        /* --- MOBILE --- */
+        .mobile-nav { display: none; }
+
+        @media (max-width: 1024px) {
+            .studio-container { grid-template-columns: 1fr; grid-template-rows: 70px 1fr 70px; }
+            .sidebar-left, .sidebar-right, .bottom-panel { 
+                display: none; position: fixed; inset: 70px 0 70px 0; 
+                z-index: 500; background: var(--mc-panel); 
+            }
+            .panel-active { display: block !important; }
+            .work-area { grid-column: 1; grid-row: 2; padding: 20px; }
+            #canvas { transform: scale(0.85); border-width: 2px; }
+            
+            .mobile-nav { 
+                grid-row: 3; background: var(--mc-border-dark); 
+                border-top: 4px solid var(--mc-border-black); 
+                display: flex; justify-content: space-around; align-items: center; z-index: 1000;
+            }
+            .nav-btn { 
+                background: none; border: none; color: var(--mc-text-muted); 
+                font-size: 1rem; font-family: 'VT323';
+                display: flex; flex-direction: column; align-items: center; 
+                flex:1; height:100%; justify-content:center; 
+            }
+            .nav-btn.active { 
+                color: var(--mc-title-gold); 
+                background: rgba(255,255,255,0.05); 
+                border-top: 4px solid var(--mc-header-red); 
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="studio-container">
+    <header>
+        <div class="brand">MIRACULOUS <span>STUDIO V8</span></div>
+        <!-- Botão com estilo Primary (Verde) -->
+        <button class="mc-button primary" style="width: auto;" onclick="exportPlugin()">EXPORTAR + COPIAR</button>
+    </header>
+
+    <aside class="sidebar-left ore-panel-style" id="tab-tools">
+        <div class="section-title">CONTAINERS</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <button class="mc-button" onclick="spawn('div')">DIV / PANEL</button>
+            <button class="mc-button" onclick="spawn('section')">SECTION</button>
+            <button class="mc-button" onclick="spawn('header')">HEADER</button>
+            <button class="mc-button" onclick="spawn('footer')">FOOTER</button>
+            <button class="mc-button" onclick="spawn('nav')">NAVBAR</button>
+            <button class="mc-button" onclick="spawn('article')">ARTICLE</button>
+        </div>
+
+        <div class="section-title">TYPOGRAPHY</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <button class="mc-button" onclick="spawn('h1')">H1 TITLE</button>
+            <button class="mc-button" onclick="spawn('h3')">H3 SUB</button>
+            <button class="mc-button" onclick="spawn('p')">TEXT P</button>
+            <button class="mc-button" onclick="spawn('span')">SPAN</button>
+        </div>
+
+        <div class="section-title">UI & FORMS</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <button class="mc-button primary" onclick="spawn('button')">BUTTON</button>
+            <button class="mc-button" onclick="spawn('input', {type:'text'})">INPUT TXT</button>
+            <button class="mc-button" onclick="spawn('input', {type:'number'})">INPUT NUM</button>
+            <button class="mc-button" onclick="spawn('textarea')">TEXTAREA</button>
+        </div>
+
+        <div class="section-title">MEDIA</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <button class="mc-button" onclick="spawn('img')">IMAGE</button>
+            <button class="mc-button" onclick="spawn('video')">VIDEO</button>
+            <button class="mc-button" onclick="spawn('iframe')">IFRAME</button>
+            <button class="mc-button" onclick="spawn('hr')">LINE HR</button>
+        </div>
+<input type="text" id="divSize"  />
+        <div class="section-title">HIERARQUIA</div>
+        <div id="layer-list" style="padding-bottom: 20px;"></div>
+    </aside>
+
+    <main class="work-area">
+        <div id="canvas"></div>
+    </main>
+
+    <aside class="sidebar-right ore-panel-style" id="tab-props">
+        <div class="section-title">PROPRIEDADES</div>
+        <div id="props-content">
+            <p style="color:#aaa; text-align:center; padding:20px;">[ SELECIONE UM ELEMENTO ]</p>
+        </div>
+    </aside>
+
+    <section class="bottom-panel" id="tab-code">
+        <div style="background:var(--mc-border-dark); padding:5px 10px; font-size:1rem; color:var(--mc-title-gold); border-bottom: 2px solid var(--mc-border-gray);">
+            LOGIC SCRIPT (.JS)
+        </div>
+        <textarea id="js-code" spellcheck="false" style="flex:1; border:none; resize:none; padding: 15px; font-size: 1rem; color:#0f0; height: 500px;">
+function onButtonClick(app) {
+    alert("Função do Plugin Executada!");
+}
+</textarea>
+    </section>
+
+    <nav class="mobile-nav">
+        <button class="nav-btn" onclick="switchMobileTab('tab-tools', this)"><span>🛠</span>TOOLS</button>
+        <button class="nav-btn active" onclick="switchMobileTab('canvas', this)"><span>📱</span>VIEW</button>
+        <button class="nav-btn" onclick="switchMobileTab('tab-props', this)"><span>⚙</span>PROPS</button>
+        <button class="nav-btn" onclick="switchMobileTab('tab-code', this)"><span>💻</span>CODE</button>
+    </nav>
+</div>
+
+<script>
+    // --- ESTADO GLOBAL ---
+    let elements = [];
+    let selectedId = null;
+    const canvas = document.getElementById('canvas');
+
+    // --- INTERACT.JS CONFIG (DRAG & RESIZE) ---
+    interact('.element-wrapper')
+        .draggable({
+            inertia: true,
+            modifiers: [ interact.modifiers.restrictRect({ restriction: 'parent', endOnly: true }) ],
+            autoScroll: true,
+            listeners: { move: dragMoveListener, start: (e) => selectElement(e.target.id) },
+        })
+        .resizable({
+            edges: { left: true, right: true, bottom: true, top: true },
+            listeners: { move: resizeMoveListener, start: (e) => selectElement(e.target.id) },
+            modifiers: [ interact.modifiers.restrictSize({ min: { width: 10, height: 10 } }) ],
+        });
+
+    function dragMoveListener(event) {
+        const el = elements.find(e => e.id === event.target.id);
+        if(el && el.locked) return;
+
+        el.x += event.dx;
+        el.y += event.dy;
+        updateVisuals(event.target, el);
+    }
+
+    function resizeMoveListener(event) {
+        const el = elements.find(e => e.id === event.target.id);
+        if(el && el.locked) return;
+
+        el.w = event.rect.width;
+        el.h = event.rect.height;
+        el.x += event.deltaRect.left;
+        el.y += event.deltaRect.top;
+        updateVisuals(event.target, el);
+    }
+
+    function updateVisuals(dom, data) {
+        dom.style.width = data.w + 'px';
+        dom.style.height = data.h + 'px';
+        dom.style.left = data.x + 'px';
+        dom.style.top = data.y + 'px';
+        if (selectedId === data.id) updatePropsUI();
+    }
+
+    // --- LÓGICA DE CRIAÇÃO (SPAWN) ---
+    function spawn(tagName, extraAttrs = {}) {
+        const id = 'el_' + Date.now();
+        
+        let parentId = null;
+        let startX = 20, startY = 20;
+        if (selectedId) {
+            const p = elements.find(e => e.id === selectedId);
+            if (p && !p.locked && ['div','section','header','footer','nav','article','aside'].includes(p.tag)) {
+                parentId = selectedId;
+                startX = 10; startY = 10;
+            }
+        }
+
+        let defaultContent = tagName.toUpperCase();
+        if(tagName === 'h1') defaultContent = "TÍTULO H1";
+        if(tagName === 'p') defaultContent = "Lorem ipsum pixel text.";
+        if(tagName === 'button') defaultContent = "CLIQUE AQUI";
+        if(['input','img','br','hr','video','iframe'].includes(tagName)) defaultContent = "";
+
+        const obj = {
+            id, 
+            tag: tagName,
+            parentId,
+            x: startX, y: startY, 
+            w: 150, h: tagName === 'div' ? 100 : 40,
+            content: defaultContent,
+            locked: false,
+            attrs: {
+                id: id,
+                class: 'miraculous-el',
+                style: `background-color: ${tagName === 'button' ? '#b71c1c' : 'transparent'}; color: inherit; font-size: 16px; font-family: inherit;`,
+                ...extraAttrs
+            },
+            events: {
+                onclick: tagName === 'button' ? 'onButtonClick' : ''
+            }
+        };
+
+        if(tagName === 'img') { obj.attrs.src = 'https://via.placeholder.com/150'; obj.h = 100; }
+        if(tagName === 'video') { obj.attrs.src = ''; obj.attrs.controls = true; obj.h = 100; }
+        if(tagName === 'iframe') { obj.attrs.src = 'https://example.com'; obj.h = 100; }
+        if(tagName === 'input') { obj.attrs.placeholder = 'Digite...'; }
+
+        elements.push(obj);
+        renderElement(obj);
+        updateTree();
+        selectElement(id);
+    }
+
+    function renderElement(el) {
+        const wrapper = document.createElement('div');
+        wrapper.id = el.id;
+        wrapper.className = 'element-wrapper';
+        wrapper.addEventListener('mousedown', (e) => { e.stopPropagation(); selectElement(el.id); });
+        
+        const container = el.parentId ? document.getElementById(el.parentId) : canvas;
+        const realHtml = document.createElement(el.tag);
+        realHtml.className = 'real-html';
+        
+        syncRealElement(realHtml, el);
+        
+        wrapper.appendChild(realHtml);
+        if(container) container.appendChild(wrapper);
+        updateVisuals(wrapper, el);
+    }
+
+    function syncRealElement(dom, el) {
+        dom.innerText = el.content;
+        dom.style.cssText = el.attrs.style + "; width:100%; height:100%; pointer-events:none;"; 
+        
+        if(el.attrs.src) dom.src = el.attrs.src;
+        if(el.attrs.placeholder) dom.placeholder = el.attrs.placeholder;
+        if(el.attrs.type) dom.type = el.attrs.type;
+        if(el.attrs.value) dom.value = el.attrs.value;
+    }
+
+    // --- SELEÇÃO E PROPRIEDADES ---
+    function selectElement(id) {
+        selectedId = id;
+        document.querySelectorAll('.element-wrapper').forEach(el => el.classList.remove('selected'));
+        const active = document.getElementById(id);
+        if(active) active.classList.add('selected');
+        updatePropsUI();
+        updateTree();
+    }
+
+    function toggleLock(id) {
+        const el = elements.find(e => e.id === id);
+        if(el) {
+            el.locked = !el.locked;
+            const dom = document.getElementById(id);
+            if(el.locked) dom.classList.add('locked'); else dom.classList.remove('locked');
+            updateTree();
+            updatePropsUI();
+        }
+    }
+
+    function updatePropsUI() {
+        const el = elements.find(e => e.id === selectedId);
+        const panel = document.getElementById('props-content');
+        if (!el) return panel.innerHTML = '<p style="text-align:center; color:#666">NADA SELECIONADO</p>';
+
+        const disabled = el.locked ? 'disabled' : '';
+        let dynamicFields = '';
+        
+        if(['img','video','iframe'].includes(el.tag)) {
+            dynamicFields += `<label>SRC URL</label><input type="text" value="${el.attrs.src || ''}" oninput="updateAttr('src', this.value)" ${disabled}>`;
+        }
+        if(el.tag === 'a') {
+            dynamicFields += `<label>HREF LINK</label><input type="text" value="${el.attrs.href || ''}" oninput="updateAttr('href', this.value)" ${disabled}>`;
+        }
+        if(el.tag === 'input') {
+            dynamicFields += `<label>PLACEHOLDER</label><input type="text" value="${el.attrs.placeholder || ''}" oninput="updateAttr('placeholder', this.value)" ${disabled}>`;
+        }
+
+        const currentBg = el.attrs.style.match(/background-color:\s*([^;]+)/)?.[1] || '#ffffff';
+        const currentColor = el.attrs.style.match(/color:\s*([^;]+)/)?.[1] || '#000000';
+
+        panel.innerHTML = `
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                <span style="color:var(--mc-title-gold); font-size:1.2rem;">&lt;${el.tag}&gt;</span>
+                <button class="mc-button ${el.locked ? 'danger' : 'primary'}" style="width:auto; font-size:1rem;" onclick="toggleLock('${el.id}')">
+                    ${el.locked ? '🔒 LOCKED' : '🔓 OPEN'}
+                </button>
+            </div>
+
+            <label>ID HTML</label>
+            <input type="text" value="${el.attrs.id}" oninput="updateAttr('id', this.value)" ${disabled}>
+            
+            <label>CLASSES CSS</label>
+            <input type="text" value="${el.attrs.class}" oninput="updateAttr('class', this.value)" ${disabled}>
+
+            ${ !['input','img','br','hr'].includes(el.tag) ? 
+               `<label>CONTEÚDO TEXTO</label><input type="text" value="${el.content}" oninput="updateContent(this.value)" ${disabled}>` : '' 
+            }
+
+            ${dynamicFields}
+
+            <label>JS ACTION (ONCLICK)</label>
+            <input type="text" value="${el.events.onclick || ''}" placeholder="nomeDaFuncao" oninput="updateEvent('onclick', this.value)" ${disabled}>
+
+            <div class="section-title">ESTILOS</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px;">
+                <div><label>BG COLOR</label><input type="color" value="${rgbToHex(currentBg)}" onchange="updateStyle('background-color', this.value)" style="height:40px" ${disabled}></div>
+                <div><label>TXT COLOR</label><input type="color" value="${rgbToHex(currentColor)}" onchange="updateStyle('color', this.value)" style="height:40px" ${disabled}></div>
+            </div>
+
+            <button class="mc-button danger" style="margin-top:20px" onclick="deleteElement()">DELETAR ELEMENTO</button>
+        `;
+    }
+
+    // --- ATUALIZADORES ---
+    function updateContent(val) {
+        const el = elements.find(e => e.id === selectedId);
+        if(el && !el.locked) {
+            el.content = val;
+            syncRealElement(document.getElementById(selectedId).querySelector('.real-html'), el);
+            updateTree();
+        }
+    }
+    function updateAttr(key, val) {
+        const el = elements.find(e => e.id === selectedId);
+        if(el && !el.locked) {
+            el.attrs[key] = val;
+            syncRealElement(document.getElementById(selectedId).querySelector('.real-html'), el);
+        }
+    }
+    function updateEvent(key, val) {
+        const el = elements.find(e => e.id === selectedId);
+        if(el && !el.locked) el.events[key] = val;
+    }
+    function updateStyle(prop, val) {
+        const el = elements.find(e => e.id === selectedId);
+        if(el && !el.locked) {
+            let style = el.attrs.style;
+            if(style.includes(prop)) {
+                const regex = new RegExp(`${prop}:\\s*[^;]+`);
+                style = style.replace(regex, `${prop}: ${val}`);
+            } else {
+                style += ` ${prop}: ${val};`;
+            }
+            el.attrs.style = style;
+            syncRealElement(document.getElementById(selectedId).querySelector('.real-html'), el);
+        }
+    }
+
+    // --- UTILS & TREE ---
+    function rgbToHex(col) {
+        if(col.startsWith('#')) return col;
+        return '#ffffff';
+    }
+
+    function updateTree() {
+        const list = document.getElementById('layer-list');
+        list.innerHTML = '';
+        function build(pid, depth) {
+            elements.filter(e => e.parentId === pid).sort((a,b) => (b.zIndex||0) - (a.zIndex||0)).forEach(el => {
+                const div = document.createElement('div');
+                div.className = `layer-item ${el.id === selectedId ? 'active' : ''}`;
+                div.style.paddingLeft = (depth * 15 + 5) + 'px';
+                if(el.locked) div.classList.add('is-locked');
+                
+                div.innerHTML = `<span>[${el.tag.toUpperCase()}] ${el.content.substring(0,8)}</span> <span>${el.locked?'🔒':''}</span>`;
+                div.onclick = () => selectElement(el.id);
+                list.appendChild(div);
+                build(el.id, depth + 1);
+            });
+        }
+        build(null, 0);
+    }
+
+    function deleteElement() {
+        if(!selectedId) return;
+        const el = elements.find(e => e.id === selectedId);
+        if(el.locked) return alert("ELEMENTO BLOQUEADO!");
+        
+        document.getElementById(selectedId).remove();
+        elements = elements.filter(e => e.id !== selectedId);
+        elements.filter(c => c.parentId === selectedId).forEach(c => {
+            c.parentId = null;
+            canvas.appendChild(document.getElementById(c.id));
+        });
+        selectedId = null;
+        updatePropsUI();
+        updateTree();
+    }
+
+    function switchMobileTab(t, b) {
+        document.querySelectorAll('.sidebar-left,.sidebar-right,.bottom-panel').forEach(e=>e.classList.remove('panel-active'));
+        document.querySelectorAll('.nav-btn').forEach(n=>n.classList.remove('active'));
+        if(t!=='canvas') document.getElementById(t).classList.add('panel-active');
+        b.classList.add('active');
+    }
+
+    // --- EXPORTAR ---
+    function exportPlugin() {
+        const userJs = document.getElementById('js-code').value;
+        const pluginName = prompt("NOME DO PLUGIN:", "MeuPluginRetro");
+        if(!pluginName) return;
+
+        function buildHTML(parentId) {
+            let html = '';
+            const children = elements.filter(e => e.parentId === parentId);
+            children.forEach(el => {
+                const finalStyle = `position:absolute; left:${el.x}px; top:${el.y}px; width:${el.w}px; height:${el.h}px; box-sizing:border-box; ${el.attrs.style}`;
+                let attrsStr = `id="${el.attrs.id}" class="${el.attrs.class}" style="${finalStyle}"`;
+                
+                for(let k in el.attrs) {
+                    if(['id','class','style'].includes(k)) continue;
+                    if(el.attrs[k]) attrsStr += ` ${k}="${el.attrs[k]}"`;
+                }
+                if(el.events.onclick) attrsStr += ` onclick="${el.events.onclick}(window.app)"`; 
+
+                const voidTags = ['img','input','br','hr','meta'];
+                if(voidTags.includes(el.tag)) {
+                    html += `<${el.tag} ${attrsStr} />\n`;
+                } else {
+                    const inner = buildHTML(el.id) + (el.content || '');
+                    html += `<${el.tag} ${attrsStr}>${inner}</${el.tag}>\n`;
+                }
+            });
+            return html;
+        }
+const sizeValue = document.getElementById("divSize").value
+        const fullHtml = buildHTML(null);
+        const finalCode = `
+/**
+ * Plugin: ${pluginName}
+ * Theme: Retro Style (V8)
+ */
+
+// USER LOGIC
+${userJs}
+
+// PLUGIN DEF
+const ${pluginName.replace(/\s/g,'')} = {
+    name: "${pluginName}",
+    version: "1.0.0",
+    desc: "Generated Retro Plugin",
+    author: "Studio V8",
+    logo: "plugin_logo.png",
+
+    init: function(app) {
+        class VisualPage extends AddonBase {
+            constructor(containerId, appInstance) {
+                super(containerId);
+                this.app = appInstance;
+            }
+
+            render() {
+                let html = '<div class="ore-panel" style="position:relative; width:100%; height:${sizeValue}; overflow-y:auto; overflow-x:hidden; background:#383838; font-family:monospace;">';
+                html += \`${fullHtml}\`;
+                html += '</div>';
+                this.container.innerHTML = html;
+            }
+        }
+        app.addPage('${pluginName.toLowerCase().replace(/\s/g,'-')}', new VisualPage(app.containerId, app), "${pluginName}");
+    }
+};
+
+if(window.app && window.app.pluginManager) {
+    window.app.pluginManager.register(${pluginName.replace(/\s/g,'')});
+    console.log("Plugin Registrado!");
+}
+        `;
+
+        navigator.clipboard.writeText(finalCode).then(() => alert("CÓDIGO COPIADO PARA O CLIPBOARD!"));
+        
+        const blob = new Blob([finalCode], {type: 'text/javascript'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `${pluginName.toLowerCase().replace(/\s/g,'_')}.js`;
+        a.click();
+    }
+</script>
+</body>
+</html>

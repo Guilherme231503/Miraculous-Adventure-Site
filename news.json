@@ -1,0 +1,16 @@
+[
+    {
+        "Title": {
+            "pt_BR": "Interface da Miracle Box do Mew",
+            "en_US": "Mew Miracle Box Interface",
+            "es_ES": "Interfaz de la Miracle Box de Mew"
+        },
+        "Description": {
+            "pt_BR": "Adicionada a interface gráfica do baú da Miracle Box.",
+            "en_US": "Added the Miracle Box chest GUI.",
+            "es_ES": "Se añadió la interfaz gráfica del cofre de la Miracle Box."
+        },
+        "Image": "news/news1.png",
+        "Date": "01/01/2026"
+    }
+]

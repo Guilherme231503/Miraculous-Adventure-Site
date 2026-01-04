@@ -1,0 +1,448 @@
+/* =========================
+   VARIÁVEIS GLOBAIS
+========================= */
+:root {
+    /* Backgrounds */
+    --mc-bg: #383838;
+    --mc-panel: #48494a;
+    --mc-bg-overlay: rgba(0,0,0,0.3);
+    --mc-bg-overlay-light: rgba(255,255,255,0.1);
+
+    /* Borders */
+    --mc-border-light: #8b8b8b;
+    --mc-border-dark: #1e1e1f;
+    --mc-border-black: #000000;
+    --mc-border-gray: #666666;
+    --mc-border-soft: #5e5e5e;
+
+    /* Header */
+    --mc-header-red: #b71c1c;
+    --mc-header-border: #7f0000;
+
+    /* Text */
+    --mc-text: #ffffff;
+    --mc-text-muted: #aaa;
+    --mc-title-gold: #ffd700;
+    --mc-text-shadow: 2px 2px 0px #000;
+
+    /* Buttons default */
+    --mc-btn-bg: #7d7d7d;
+    --mc-btn-border-light: #aeb0b2;
+    --mc-btn-border-dark: #3a3a3b;
+
+    /* Buttons green */
+    --mc-green-btn: #3c8527;
+    --mc-green-btn-hover: #2a641c;
+    --mc-green-border-light: #5bb344;
+    --mc-green-border-dark: #1e4513;
+
+    /* Discord */
+    --mc-discord: #5865F2;
+    --mc-discord-hover: #4752c4;
+    --mc-discord-border-dark: #2c3385;
+
+    /* YouTube */
+    --mc-youtube: #ff0000;
+    --mc-youtube-hover: #aa2913;
+    --mc-youtube-border-light: #ff4500;
+
+    /* Shadows */
+    --mc-shadow-strong: rgba(0,0,0,0.5);
+    --mc-shadow-soft: rgba(0,0,0,0.4);
+
+    /* Images */
+    --mc-bg-image: url('https://www.transparenttextures.com/patterns/cubes.png');
+}
+
+/* =========================
+   RESET
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'VT323', monospace;
+}
+
+/* =========================
+   BODY
+========================= */
+body {
+    background-color: var(--mc-bg);
+    background-image: var(--mc-bg-image);
+    color: var(--mc-text);
+    padding-top: 80px;
+}
+
+/* =========================
+   HEADER
+========================= */
+header {
+    background-color: var(--mc-header-red);
+    border-bottom: 4px solid var(--mc-header-border);
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 4px 0 var(--mc-shadow-soft);
+}
+
+.logo-container img {
+    height: 50px;
+    filter: drop-shadow(2px 2px 0 var(--mc-border-black));
+}
+
+/* =========================
+   HAMBURGER
+========================= */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 5px;
+}
+
+.hamburger div {
+    width: 30px;
+    height: 4px;
+    background-color: var(--mc-text);
+    border: 1px solid var(--mc-border-black);
+}
+
+/* =========================
+   NAV
+========================= */
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+
+nav ul li button {
+    background: none;
+    border: none;
+    color: var(--mc-text);
+    font-size: 1.5rem;
+    text-shadow: var(--mc-text-shadow);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+nav ul li button:hover {
+    color: var(--mc-title-gold);
+}
+
+/* =========================
+   MAIN
+========================= */
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* =========================
+   TITLES
+========================= */
+h1, h2, h3 {
+    text-shadow: var(--mc-text-shadow);
+    margin-bottom: 15px;
+}
+
+h1 {
+    font-size: 3rem;
+    color: var(--mc-title-gold);
+    text-align: center;
+}
+
+h2 {
+    font-size: 2rem;
+    border-bottom: 2px solid var(--mc-border-gray);
+    padding-bottom: 5px;
+}
+
+/* =========================
+   PANELS
+========================= */
+.ore-panel {
+    background-color: var(--mc-panel);
+    border: 4px solid;
+    border-color: var(--mc-border-light)
+                  var(--mc-border-dark)
+                  var(--mc-border-dark)
+                  var(--mc-border-light);
+    padding: 20px;
+    box-shadow: 4px 4px 0 var(--mc-shadow-strong);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.mc-button {
+    display: inline-block;
+    background-color: var(--mc-btn-bg);
+    border: 2px solid;
+    border-color: var(--mc-btn-border-light)
+                  var(--mc-btn-border-dark)
+                  var(--mc-btn-border-dark)
+                  var(--mc-btn-border-light);
+    color: var(--mc-text);
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    text-decoration: none;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 0 var(--mc-border-black);
+}
+
+.mc-button:active {
+    border-color: var(--mc-btn-border-dark)
+                  var(--mc-btn-border-light)
+                  var(--mc-btn-border-light)
+                  var(--mc-btn-border-dark);
+    transform: translate(2px, 2px);
+}
+
+.mc-button.primary {
+    background-color: var(--mc-green-btn);
+    border-color: var(--mc-green-border-light)
+                  var(--mc-green-border-dark)
+                  var(--mc-green-border-dark)
+                  var(--mc-green-border-light);
+}
+
+/* =========================
+   GRID / CARDS
+========================= */
+.miraculous-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.info-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.info-card img {
+    width: 100%;
+    border: 2px solid var(--mc-border-black);
+    image-rendering: pixelated;
+}
+
+/* =========================
+   KV GRID
+========================= */
+.kv-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.kv-item {
+    text-align: center;
+    background: var(--mc-bg-overlay);
+    padding: 5px;
+    border: 1px solid var(--mc-border-gray);
+}
+
+.kv-item img {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+}
+
+/* =========================
+   STATS
+========================= */
+.stat-box {
+    background: var(--mc-border-dark);
+    padding: 10px;
+    border: 1px solid var(--mc-border-soft);
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    color: var(--mc-text-muted);
+    font-size: 1.1rem;
+}
+
+.stat-value {
+    color: var(--mc-text);
+    font-size: 1.2rem;
+}
+
+/* =========================
+   DISCORD / YOUTUBE
+========================= */
+.discord-btn {
+    background-color: var(--mc-discord);
+    border-color: var(--mc-discord-hover)
+                  var(--mc-discord-border-dark)
+                  var(--mc-discord-border-dark)
+                  var(--mc-discord-hover);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.discord-btn:hover {
+    background-color: var(--mc-discord-hover);
+}
+
+.discord-icon,
+.youtube-icon {
+    width: 24px;
+    height: 24px;
+    image-rendering: pixelated;
+}
+
+.youtube-btn {
+    background-color: var(--mc-youtube);
+    border-color: var(--mc-youtube-border-light)
+                  var(--mc-youtube-hover)
+                  var(--mc-youtube-hover)
+                  var(--mc-youtube-border-light);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.youtube-btn:hover {
+    background-color: var(--mc-youtube-hover);
+}
+
+/* =========================
+   HEADER FLAGS
+========================= */
+.header-with-flag {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.lang-flag {
+    width: 40px;
+    height: auto;
+    border: 2px solid var(--mc-text);
+    box-shadow: 2px 2px 0 var(--mc-border-black);
+    image-rendering: pixelated;
+}
+
+/* =========================
+   CREDITS
+========================= */
+.credits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.credit-card {
+    background: var(--mc-bg-overlay);
+    border: 2px solid var(--mc-border-soft);
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.credit-card:hover {
+    background: var(--mc-bg-overlay-light);
+    transform: translateY(-5px);
+    border-color: var(--mc-title-gold);
+}
+
+.credit-avatar {
+    width: 80px;
+    height: 80px;
+    border: 2px solid var(--mc-text);
+    box-shadow: 2px 2px 0 var(--mc-border-black);
+    margin-bottom: 10px;
+    image-rendering: pixelated;
+    background-color: #555;
+    object-fit: cover;
+}
+
+.credit-name {
+    color: var(--mc-text);
+    font-size: 1.2rem;
+    text-shadow: 1px 1px 0 var(--mc-border-black);
+}
+
+.credit-role {
+    color: var(--mc-text-muted);
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+/* =========================
+   THEMES
+========================= */
+.theme-card {
+    background-color: var(--mc-panel);
+    border: 4px solid var(--mc-border-light);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    text-align: center;
+}
+
+.theme-icon {
+    width: 64px;
+    height: 64px;
+    border: 2px solid var(--mc-text);
+    background: rgba(0,0,0,0.2);
+    image-rendering: pixelated;
+    padding: 5px;
+}
+
+.theme-current {
+    border-color: var(--mc-title-gold);
+    box-shadow: 0 0 10px var(--mc-title-gold);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+
+    nav {
+        position: absolute;
+        top: 70px;
+        right: -100%;
+        width: 250px;
+        background-color: var(--mc-panel);
+        border: 2px solid var(--mc-border-black);
+        transition: 0.3s;
+        padding: 20px;
+    }
+
+    nav.active {
+        right: 0;
+    }
+
+    nav ul {
+        flex-direction: column;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+}
