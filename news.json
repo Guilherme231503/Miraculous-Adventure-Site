@@ -1,21 +1,6 @@
 [
   {
     "Title": {
-      "pt_BR": "Nova interface Miracle Box ",
-      "en_US": "New Miracle Box Interface",
-      "es_ES": "Nueva interfaz de caja milagrosa "
-    },
-    "Description": {
-      "pt_BR": "Adicionado o Miracle Box Chest GUI.",
-      "en_US": "Added the Miracle Box chest GUI.",
-      "es_ES": "Adicionado o Miracle Box Chest GUI."
-    },
-    "Type": "Image",
-    "Media": "news/news1.png",
-    "Date": "01/01/2026"
-  },
-  {
-    "Title": {
       "pt_BR": "Novo Sistema de Particulas",
       "en_US": "New particle system",
       "es_ES": "Nuevo sistema de partículas"
@@ -28,5 +13,20 @@
     "Type": "Video",
     "Media": "news/news2.mp4",
     "Date": "01/06/2026"
+  },
+  {
+    "Title": {
+      "pt_BR": "Nova interface Miracle Box ",
+      "en_US": "New Miracle Box Interface",
+      "es_ES": "Nueva interfaz de caja milagrosa "
+    },
+    "Description": {
+      "pt_BR": "Adicionado o Miracle Box Chest GUI.",
+      "en_US": "Added the Miracle Box chest GUI.",
+      "es_ES": "Adicionado o Miracle Box Chest GUI."
+    },
+    "Type": "Image",
+    "Media": "news/news1.png",
+    "Date": "01/01/2026"
   }
 ]
