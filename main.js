@@ -674,84 +674,152 @@ class AddonNews extends AddonBase {
     }
 
     fetchNews() {
-        // Adiciona um timestamp na URL para evitar cache agressivo do navegador se mudar o JSON
-        fetch(`news.json?t=${new Date().getTime()}`)
+        fetch(`news.json?t=${Date.now()}`)
             .then(response => {
                 if (!response.ok) throw new Error("404");
                 return response.json();
             })
             .then(data => {
-                this.newsData = data;
+                this.newsData = Array.isArray(data) ? data : [];
                 this.hasFetched = true;
                 this.render();
             })
             .catch(err => {
                 console.error("Erro ao buscar news.json", err);
-                this.newsData = []; 
+                this.newsData = [];
                 this.hasFetched = true;
                 this.render();
             });
     }
 
-    // Método auxiliar para escolher o idioma certo dentro do objeto JSON
+    // Seleciona o texto correto baseado no idioma atual
     getLocalizedContent(contentObj) {
-        if (typeof contentObj === 'string') return contentObj; // Caso antigo (string direta)
-        if (!contentObj) return "";
+        if (typeof contentObj === "string") return contentObj;
+        if (!contentObj || typeof contentObj !== "object") return "";
 
-        const lang = this.app.langManager.currentLang; // Pega o idioma salvo no passo 2
+        const lang = this.app.langManager.currentLang;
 
-        // 1. Tenta o idioma exato (ex: pt_BR)
         if (contentObj[lang]) return contentObj[lang];
-        
-        // 2. Fallback para Inglês (en_US)
-        if (contentObj['en_US']) return contentObj['en_US'];
+        if (contentObj["en_US"]) return contentObj["en_US"];
 
-        // 3. Fallback para o primeiro que encontrar
         const keys = Object.keys(contentObj);
-        return keys.length > 0 ? contentObj[keys[0]] : "";
+        return keys.length ? contentObj[keys[0]] : "";
+    }
+
+    // Renderiza imagem ou vídeo baseado no Type
+    renderMedia(item) {
+        if (!item || !item.Type || !item.Media) return "";
+
+        if (item.Type === "Image") {
+            return `
+                <img
+                    src="${item.Media}"
+                    loading="lazy"
+                    style="
+                        width:100%;
+                        height:200px;
+                        object-fit:cover;
+                        border-bottom:2px solid var(--mc-border-dark);
+                    "
+                >
+            `;
+        }
+
+        if (item.Type === "Video") {
+            return `
+                <video
+                    src="${item.Media}"
+                    controls
+                    preload="metadata"
+                    style="
+                        width:100%;
+                        max-height:300px;
+                        background:#000;
+                        border-bottom:2px solid var(--mc-border-dark);
+                    "
+                ></video>
+            `;
+        }
+
+        return "";
     }
 
     render() {
         this.clear();
-        const txt = this.app.data.news; 
+        const txt = this.app.data.news;
 
         if (!this.hasFetched) {
-            this.container.innerHTML = `<div class="ore-panel"><h2 style="text-align:center;">Loading...</h2></div>`;
+            this.container.innerHTML = `
+                <div class="ore-panel">
+                    <h2 style="text-align:center;">Loading...</h2>
+                </div>
+            `;
             this.fetchNews();
             return;
         }
 
         if (!this.newsData || this.newsData.length === 0) {
             this.container.innerHTML = `
-                <div class="ore-panel" style="text-align:center; padding: 40px;">
-                    <h2 style="color: #ccc;">${txt.empty}</h2>
-                    <img src="https://via.placeholder.com/128?text=:(" style="margin-top:20px; opacity:0.5; border-radius:50%;">
+                <div class="ore-panel" style="text-align:center; padding:40px;">
+                    <h2 style="color:#ccc;">${txt.empty}</h2>
+                    <img
+                        src="https://via.placeholder.com/128?text=:("
+                        style="margin-top:20px; opacity:0.5; border-radius:50%;"
+                    >
                 </div>
             `;
             return;
         }
 
-        let newsHtml = '';
-        
-        this.newsData.forEach(item => {
-            const imgHtml = item.Image ? 
-                `<img src="${item.Image}" style="width:100%; height:200px; object-fit:cover; border-bottom: 2px solid var(--mc-border-dark);">` 
-                : '';
+        let newsHtml = "";
 
-            // Processa a tradução
+        this.newsData.forEach(item => {
             const title = this.getLocalizedContent(item.Title);
-            const desc = this.getLocalizedContent(item.Description);
+            const desc  = this.getLocalizedContent(item.Description);
+            const media = this.renderMedia(item);
 
             newsHtml += `
-                <div class="ore-panel" style="padding:0; overflow:hidden; display:flex; flex-direction:column; margin-bottom: 20px;">
-                    ${imgHtml}
-                    <div style="padding: 15px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:10px;">
-                            <h2 style="margin:0; color: var(--mc-header-red); text-shadow: 1px 1px 0 #000;">${title}</h2>
-                            <span style="font-size:0.8rem; background:rgba(0,0,0,0.5); padding:2px 8px; border-radius:4px; color:#fff;">${item.Date}</span>
+                <div class="ore-panel" style="
+                    padding:0;
+                    overflow:hidden;
+                    display:flex;
+                    flex-direction:column;
+                    margin-bottom:20px;
+                ">
+                    ${media}
+
+                    <div style="padding:15px;">
+                        <div style="
+                            display:flex;
+                            justify-content:space-between;
+                            align-items:center;
+                            margin-bottom:10px;
+                            flex-wrap:wrap;
+                            gap:10px;
+                        ">
+                            <h2 style="
+                                margin:0;
+                                color:var(--mc-header-red);
+                                text-shadow:1px 1px 0 #000;
+                            ">
+                                ${title}
+                            </h2>
+
+                            <span style="
+                                font-size:0.8rem;
+                                background:rgba(0,0,0,0.5);
+                                padding:2px 8px;
+                                border-radius:4px;
+                                color:#fff;
+                            ">
+                                ${item.Date || ""}
+                            </span>
                         </div>
-                        
-                        <div style="color: var(--mc-text); margin-bottom:10px; line-height:1.5;">
+
+                        <div style="
+                            color:var(--mc-text);
+                            line-height:1.5;
+                        ">
                             ${desc}
                         </div>
                     </div>
@@ -760,7 +828,7 @@ class AddonNews extends AddonBase {
         });
 
         this.container.innerHTML = `
-            <div style="max-width: 800px; margin: 0 auto;">
+            <div style="max-width:800px; margin:0 auto;">
                 <div class="ore-panel" style="text-align:center; margin-bottom:20px;">
                     <h1>${txt.pageTitle}</h1>
                 </div>
